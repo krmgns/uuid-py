@@ -46,7 +46,7 @@ class Uuid(object):
 
         return super().__setattr__(aname, avalue)
 
-    # Getter Methods.
+    ### Getter Methods. ###
 
     def toString(self) -> str:
         return self.__value
@@ -54,7 +54,7 @@ class Uuid(object):
     def toHashString(self) -> str:
         return self.__value.replace('-', '')
 
-    # Checker Methods.
+    ### Checker Methods. ###
 
     def isNull(self) -> bool:
         return self.equals(self.NULL, self.__value)
