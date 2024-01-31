@@ -9,13 +9,12 @@ Null = object()
 def typeOf(x, check: bool = False) -> str:
     name = x if check and isTypeOf(x, type) else type(x)
     name = str(name)[8:-2]
-
     # Drop mid part.
     if 'ouuid.' in name:
         name = re.sub(r'ouuid\.\w+\.(\w+)', r'ouuid.\1', name)
-
     return name
 
+# Check types, eg: (int, str, ...)
 def isTypeOf(x, *types: object) -> bool:
     return isinstance(x, types)
 
