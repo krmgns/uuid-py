@@ -1,6 +1,6 @@
 from __future__ import annotations
 from .__util import typeOf
-import re, typing
+import typing
 
 class UuidError(Exception):
     @staticmethod
