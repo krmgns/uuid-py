@@ -84,7 +84,7 @@ assert True == uuid.isValid()
 uuid = Uuid('invalid', strict=False)
 assert False == uuid.isValid()
 
-try: Uuid(null)
+try: Uuid(None)
 except UuidError as e:
     assert "Argument value type must be str|ouuid.Uuid|uuid.UUID, None given" == e.message
 
@@ -148,6 +148,120 @@ bins = Uuid.modify(bins)
 
 # Format as UUID format.
 uuid = Uuid.format(bins.hex())
+```
+
+See [test/main.py](test/main.py) for more examples. <br><br>
+
+### The `DateUuid` Class
+
+This class uses 12-length random bytes and 4-length bytes of UTC date as prefix. So, its date can be re-taken (eg: 20231212 or 2023-12-12 with `separator` option) to use for any use case and it's usable for where sortable UUIDs are needed.
+
+```py
+from ouuid import Uuid, DateUuid
+
+date = datetime.utcnow().strftime('%Y.%m.%d').split('.')
+time = '00.00.00'.split('.')
+
+# Getting date.
+uuid = DateUuid()
+
+assert date == uuid.getDate()
+assert '-'.join(date) == uuid.getDate(separator='-')
+
+uuid = DateUuid('d41d8cd98f00b204e9800998ecf8427e', strict=False)
+
+assert None == uuid.getDate()
+
+# Getting date/time.
+uuid = DateUuid()
+
+assert '-'.join(date) == uuid.getDateTime().strftime('%Y-%m-%d')
+assert ':'.join(time) == uuid.getDateTime().strftime('%H:%M:%S')
+
+uuid = DateUuid('d41d8cd98f00b204e9800998ecf8427e', strict=False)
+
+assert None == uuid.getDateTime()
+```
+
+#### Statics
+
+```py
+# Generating.
+uuid = DateUuid.generate() # Eg: 0134b3ce-25fc-49f8-b9f9-61ed2784c7d1
+
+# Parsing.
+uuid1 = DateUuid()
+uuid2 = DateUuid('d41d8cd98f00b204e9800998ecf8427e', strict=False)
+
+assert None != DateUuid.parse(uuid1.value)
+assert None == DateUuid.parse(uuid2.value)
+
+# Next year for falsity (eg: 20241212).
+threshold = str(int(datetime.utcnow().strftime('%Y')) + 1) + '1212'
+
+assert None == DateUuid.parse(uuid1.value, threshold)
+```
+
+See [test/main.py](test/main.py) for more examples. <br><br>
+
+### The `DateTimeUuid` Class
+
+This class uses 10-length random bytes and 6-length bytes of UTC date/time as prefix. So, its date can be re-taken (eg: 20231212, 101122 or 2023-12-12, 10-11-22 with `separator` option) to use for any use case and it's usable for where sortable UUIDs are needed.
+
+```py
+from ouuid import Uuid, DateTimeUuid
+
+date = datetime.utcnow().strftime('%Y.%m.%d').split('.')
+time = datetime.utcnow().strftime('%H.%M.%S').split('.')
+
+# Getting date.
+uuid = DateTimeUuid()
+
+assert date == uuid.getDate()
+assert '-'.join(date) == uuid.getDate(separator='-')
+
+uuid = DateTimeUuid('d41d8cd98f00b204e9800998ecf8427e', strict=False)
+
+assert None == uuid.getDate()
+
+# Getting time.
+uuid = DateTimeUuid()
+
+assert time == uuid.getTime()
+assert ':'.join(time) == uuid.getTime(separator=':')
+
+uuid = DateTimeUuid('d41d8cd98f00b204e9800998ecf8427e', strict=False)
+
+assert None == uuid.getTime()
+
+# Getting date/time.
+uuid = DateTimeUuid()
+
+assert '-'.join(date) == uuid.getDateTime().strftime('%Y-%m-%d')
+assert ':'.join(time) == uuid.getDateTime().strftime('%H:%M:%S')
+
+uuid = DateTimeUuid('d41d8cd98f00b204e9800998ecf8427e', strict=False)
+
+assert None == uuid.getDateTime()
+```
+
+#### Statics
+
+```py
+# Generating.
+uuid = DateTimeUuid.generate() # Eg: 12666c9c-b0c6-4532-b8da-dbc660ff4170
+
+# Parsing.
+uuid1 = DateTimeUuid()
+uuid2 = DateTimeUuid('d41d8cd98f00b204e9800998ecf8427e', strict=False)
+
+assert None != DateTimeUuid.parse(uuid1.value)
+assert None == DateTimeUuid.parse(uuid2.value)
+
+# Next year for falsity (eg: 20241212191919).
+threshold = str(int(datetime.utcnow().strftime('%Y')) + 1) + '1212191919'
+
+assert None == DateTimeUuid.parse(uuid1.value, threshold)
 ```
 
 See [test/main.py](test/main.py) for more examples. <br><br>
