@@ -55,8 +55,99 @@ pip install ouuid
 
 ### Notes / Reminding
 
-· Besides all classes can take `value` argument (#1) as type of `str`, `Uuid` class can also take type of `Uuid`, `DateUuid` class can also take type of `DateUuid`, `DateTimeUuid` class can also take type of `DateTimeUuid`, but it also can be skipped for auto-generation at the same time.
+· Besides all classes can take `value` argument (#1) as type of `str` and built-in `uuid.UUID`, `Uuid` class can also take type of `Uuid`, `DateUuid` class can also take type of `DateUuid`, `DateTimeUuid` class can also take type of `DateTimeUuid`, but it also can be skipped for auto-generation at the same time.
 
 · Besides `Uuid` is able to be cast to string, `DateUuid` and `DateTimeUuid` are subclasses of `Uuid` class. So, while inheriting some useful methods (`toString()`, `toHashString()`, etc.), they also overrides some methods (`isValid()`, `generate()`, `validate()` etc.) alongside `__init__()` methods.
 
 · Since `DateTimeUuid` uses an instant date/time stamp up to seconds (format: `%Y%m%d%H%I%S`), the best sortable UUIDs can only be generated with this class.
+
+### The `Uuid` Class
+
+Like the inheriting classes, when no `value` (UUID value) given, `Uuid` class will generate and assign its value by itself. Otherwise, given value will be assigned after it's checked in strict mode (modifier argument is `strict` as `True`) whether it's a valid UUID value or not.
+
+```py
+from ouuid import Uuid, UuidError
+
+# Auto-generate.
+uuid = Uuid()
+
+assert uuid.value == uuid.toString()
+assert uuid.value == str(uuid)
+assert uuid.value == uuid # Equable
+
+assert True == uuid.isEqual(uuid)
+assert True == uuid.isEqual(uuid.value)
+
+uuid = Uuid('26708ec6-ad78-4291-a449-9ee08cf50cfc')
+assert True == uuid.isValid()
+
+uuid = Uuid('invalid', strict=False)
+assert False == uuid.isValid()
+
+try: Uuid(null)
+except UuidError as e:
+    assert "Argument value type must be str|ouuid.Uuid|uuid.UUID, None given" == e.message
+
+try: Uuid('invalid')
+except UuidError as e:
+    assert "Invalid UUID value: 'invalid'" == e.message
+
+# Given value.
+value = '26708ec6-ad78-4291-a449-9ee08cf50cfc'
+uuid = Uuid(value)
+
+assert True == uuid.isEqual(uuid)
+assert True == uuid.isEqual(uuid.value)
+assert True == uuid.isEqual(value)
+
+assert '26708ec6-ad78-4291-a449-9ee08cf50cfc' == uuid.toString()
+assert '26708ec6ad784291a4499ee08cf50cfc' == uuid.toHashString()
+
+# Null values.
+uuid1 = Uuid('00000000-0000-0000-0000-000000000000', strict=False)
+uuid2 = Uuid('00000000000000000000000000000000', strict=False)
+
+assert False == uuid1.isValid()
+assert False == uuid2.isValid()
+
+assert True == uuid1.isNull()
+assert True == uuid2.isNullHash()
+
+assert Uuid.NULL == uuid1.value
+assert Uuid.NULL_HASH == uuid2.value
+```
+
+#### Statics
+
+```py
+# Generating.
+uuid = Uuid.generate() # Eg: fec3cfe2-d378-4181-8ba1-99c54bcfa63e
+
+# Validating.
+valid = Uuid.validate(uuid)
+assert True == valid
+
+assert False == Uuid.validate('invalid')
+assert False == Uuid.validate('invalid', strict=False)
+
+assert False == Uuid.validate(Uuid.NULL)
+assert False == Uuid.validate(Uuid.NULL_HASH)
+
+assert True == Uuid.validate(Uuid.NULL, strict=False)
+assert True == Uuid.validate(Uuid.NULL_HASH, strict=False)
+
+# Equal checking.
+assert True == Uuid.equals(uuid, 'fec3cfe2-d378-4181-8ba1-99c54bcfa63e')
+assert False == Uuid.equals(uuid, 'invalid-uuid-input-value')
+
+# DIY tools.
+bins = random.randbytes(16)
+
+# Add version/variant.
+bins = Uuid.modify(bins)
+
+# Format as UUID format.
+uuid = Uuid.format(bins.hex())
+```
+
+See [test/main.py](test/main.py) for more examples. <br><br>
