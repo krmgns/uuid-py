@@ -14,7 +14,6 @@ sys.path.insert(0, os.path.abspath(__file__ + '/../..'))
 from ouuid import Uuid, DateUuid, DateTimeUuid, UuidError
 from ouuid.__util import listing, string, dating
 from uuid import UUID as PyUuid
-
 import unittest
 
 UUID = '84572c49-f0b6-4286-8008-22026cc6209e'
