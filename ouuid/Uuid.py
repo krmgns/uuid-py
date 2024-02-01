@@ -132,4 +132,4 @@ class Uuid(object):
         if len(hash) != 32 or hash.isHex() is False:
             raise UuidError.forInvalidHash()
 
-        return '%s%s-%s-%s-%s-%s%s%s' % tuple(hash.slit(4))
+        return '%s%s-%s-%s-%s-%s%s%s' % hash.slit(4)
