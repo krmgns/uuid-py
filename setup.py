@@ -1,6 +1,3 @@
-# Copyright (c) 2023 · Kerem Güneş
-# Apache License 2.0 · https://github.com/krmgns/uuid
-
 from setuptools import setup
 
 setup(
