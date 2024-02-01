@@ -3,6 +3,13 @@ from .__util import typeOf
 import typing
 
 class UuidError(Exception):
+    def getMessage(self):
+        return str(self)
+
+    @property
+    def message(self):
+        return str(self)
+
     @staticmethod
     def forInvalidValueType(value: typing.Any, types: list[type]) -> UuidError:
         given = typeOf(value)
