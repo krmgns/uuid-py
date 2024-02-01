@@ -9,7 +9,7 @@ import os, sys
 # sys.path.append(os.path.realpath('../..'))
 # Constant "__file__" is required for console.
 # sys.path.append(os.path.abspath(__file__ + '/../..'))
-sys.path.insert(0, os.path.abspath(__file__ + '/../..'))
+sys.path.insert(0, os.path.abspath(__file__ + '/../../..'))
 
 from ouuid import Uuid, DateUuid, DateTimeUuid, UuidError
 from ouuid.__util import listing, string, dating
