@@ -74,7 +74,7 @@ class DateUuid(Uuid):
 
     @staticmethod
     def parse(uuid: str, threshold: str|int = None) -> list[str]|None:
-        ret, sub = None, string(str(uuid)[0:8])
+        ret, sub = None, string(uuid).cut(8)
 
         # Extract usable part from value.
         if len(sub) == 8 and sub.isHex():

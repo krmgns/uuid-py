@@ -83,7 +83,7 @@ class DateTimeUuid(Uuid):
 
     @staticmethod
     def parse(uuid: str, threshold: str|int = None) -> list[list[str]]|None:
-        ret, sub = None, string(str(uuid).replace('-', '')[0:12])
+        ret, sub = None, string(uuid).cut(13).drop('-')
 
         # Extract usable part from value.
         if len(sub) == 12 and sub.isHex():

@@ -56,6 +56,9 @@ class string(str):
             return string(self[start:])
         return string(self[start:][:length])
 
+    def drop(self, search: str) -> string:
+        return string(self.replace(search, ''))
+
     def slit(self, num: int, tup: bool = True) -> tuple|listing:
         ret = textwrap.wrap(self, num)
         return tuple(ret) if tup else listing(ret)
