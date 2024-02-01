@@ -6,5 +6,6 @@
 .eggs/
 .mypy_cache/
 .pytest_cache/
+build/
 dist/
 poetry.lock
