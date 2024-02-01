@@ -23,30 +23,29 @@ class DateTimeUuid(Uuid):
 
         super().__init__(value, False)
 
-    def getDate(self, separator: str = None) -> str|None:
-        date, _ = self.parseDateTime(self.value, self.threshold) or [None, None]
+    def getDate(self, separator: str = None) -> list[str]|None:
+        date, _ = self.parse(self.value, self.threshold) or [None, None]
 
         if date and separator:
-            s = string(date).slit(2)
-            date = f'%s%s{separator}%s{separator}%s' % s
+            date = f'%s{separator}%s{separator}%s' % (*date,)
+            # date = f'{{0}}{separator}{{1}}{separator}{{2}}'.format(*date) # alt
 
         return date
 
-    def getTime(self, separator: str = None) -> str|None:
-        _, time = self.parseDateTime(self.value, self.threshold) or [None, None]
+    def getTime(self, separator: str = None) -> list[str]|None:
+        _, time = self.parse(self.value, self.threshold) or [None, None]
 
         if time and separator:
-            s = string(time).slit(2)
-            time = f'%s{separator}%s{separator}%s' % s
+            time = f'%s{separator}%s{separator}%s' % (*time,)
+            # time = f'{{0}}{separator}{{1}}{separator}{{2}}'.format(*time) # alt
 
         return time
 
     def getDateTime(self, zone: str = None) -> datetime|None:
-        date, time = self.parseDateTime(self.value, self.threshold) or [None, None]
+        date, time = self.parse(self.value, self.threshold) or [None, None]
 
         if date and time:
-            s = string(date + time).slit(2)
-            y, m, d, h, i, s = map(int, [s[0] + s[1], s[2], s[3], s[4], s[5], s[6]])
+            y, m, d, h, i, s = map(int, date + time)
             ret = datetime(y, m, d, h, i, s, tzinfo=ZoneInfo('UTC'))
 
             # Convert to zone.
@@ -77,13 +76,13 @@ class DateTimeUuid(Uuid):
     def validate(uuid: str, strict: bool = True, threshold: str|int = None) -> bool:
         if not Uuid.validate(uuid, strict):
             return False
-        if not DateTimeUuid.parseDateTime(uuid, threshold):
+        if not DateTimeUuid.parse(uuid, threshold):
             return False
 
         return True
 
     @staticmethod
-    def parseDateTime(uuid: str, threshold: str|int = None) -> list|None:
+    def parse(uuid: str, threshold: str|int = None) -> list[list[str]]|None:
         ret, sub = None, string(str(uuid).replace('-', '')[0:12])
 
         # Extract usable part from value.
@@ -94,7 +93,7 @@ class DateTimeUuid(Uuid):
 
             # Validate.
             if dating.isValidDate(y, m, d) and dating.isValidTime(h, i, s):
-                ret = [y + m + d, h + i + s]
+                ret = [[y, m, d], [h, i, s]]
 
         # Validate.
         if ret:

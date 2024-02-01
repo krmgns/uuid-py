@@ -20,33 +20,18 @@ class UuidError(Exception):
     def forInvalidValue(value: typing.Any) -> UuidError:
         return UuidError("Invalid UUID value: '%s'" % value)
 
-        # if value is None:
-        #     return UuidError("Invalid UUID value: None")
-        # else:
-        #     return UuidError("Invalid UUID value: '%s'" % value)
-
     @staticmethod
     def forInvalidDateValue(value: typing.Any) -> UuidError:
         return UuidError("Invalid date UUID value: '%s'" % value)
-
-        # if value is None:
-        #     return UuidError("Invalid date UUID value: None")
-        # else:
-        #     return UuidError("Invalid date UUID value: '%s'" % value)
 
     @staticmethod
     def forInvalidDateTimeValue(value: typing.Any) -> UuidError:
         return UuidError("Invalid date/time UUID value: '%s'" % value)
 
-        # if value is None:
-        #     return UuidError("Invalid date/time UUID value: None")
-        # else:
-        #     return UuidError("Invalid date/time UUID value: '%s'" % value)
-
     @staticmethod
-    def forInvalidBins():
+    def forInvalidBins() -> UuidError:
         return UuidError('Modify for only 16-length bins')
 
     @staticmethod
-    def forInvalidHash():
+    def forInvalidHash() -> UuidError:
         return UuidError('Format for only 32-length hashes')
