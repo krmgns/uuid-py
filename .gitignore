@@ -1,0 +1,10 @@
+*__pycache__*
+*.pyc
+*.tox
+*.egg
+*.egg-info
+.eggs/
+.mypy_cache/
+.pytest_cache/
+dist/
+poetry.lock
