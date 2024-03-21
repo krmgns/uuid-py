@@ -150,7 +150,7 @@ bins = Uuid.modify(bins)
 uuid = Uuid.format(bins.hex())
 ```
 
-See [test/main.py](test/main.py) for more examples. <br><br>
+See [ouuid/test/unit.py](test/unit.py) for more examples. <br><br>
 
 ### The `DateUuid` Class
 
