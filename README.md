@@ -150,7 +150,7 @@ bins = Uuid.modify(bins)
 uuid = Uuid.format(bins.hex())
 ```
 
-See [ouuid/test/unit.py](test/unit.py) for more examples. <br><br>
+See [test/unit.py](ouuid/test/unit.py) for more examples. <br><br>
 
 ### The `DateUuid` Class
 
@@ -202,7 +202,7 @@ threshold = str(int(datetime.utcnow().strftime('%Y')) + 1) + '1212'
 assert None == DateUuid.parse(uuid1.value, threshold)
 ```
 
-See [test/main.py](test/main.py) for more examples. <br><br>
+See [test/unit.py](ouuid/test/unit.py) for more examples. <br><br>
 
 ### The `DateTimeUuid` Class
 
@@ -264,4 +264,4 @@ threshold = str(int(datetime.utcnow().strftime('%Y')) + 1) + '1212191919'
 assert None == DateTimeUuid.parse(uuid1.value, threshold)
 ```
 
-See [test/main.py](test/main.py) for more examples. <br><br>
+See [test/unit.py](ouuid/test/unit.py) for more examples. <br><br>
